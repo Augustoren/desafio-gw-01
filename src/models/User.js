@@ -20,7 +20,8 @@ const userSchema = new mongoose.Schema({
     default: Date.now
   },
   updatedAt: {
-    type: Date
+    type: Date,
+    default: Date.now
   },
   lastLogin: {
     type: Date,
@@ -29,13 +30,12 @@ const userSchema = new mongoose.Schema({
   token: {
     type: String,
     default: function () {
-      const token = JWT.sign(
+      return JWT.sign(
         {
           nome: this.nome,
           email: this.email,
           telefones: this.telefones
-        }, process.env.JWT_SECRET, { expiresIn: '2 days' })
-      return token
+        }, process.env.JWT_SECRET)
     }
   }
 })
@@ -55,7 +55,7 @@ function validateUser(user) {
   return schema.validate(user)
 }
 
-userSchema.pre('save', (next) => {
+userSchema.pre('save', next => {
   this.updatedAt = Date.now()
   return next()
 })
