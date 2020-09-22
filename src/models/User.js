@@ -14,28 +14,51 @@ const userSchema = new mongoose.Schema({
     ddd: {
       type: Number
     }
-  }]
+  }],
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  updatedAt: {
+    type: Date
+  },
+  lastLogin: {
+    type: Date,
+    default: Date.now
+  },
+  token: {
+    type: String,
+    default: function () {
+      const token = JWT.sign(
+        {
+          nome: this.nome,
+          email: this.email,
+          telefones: this.telefones
+        }, process.env.JWT_SECRET, { expiresIn: '2 days' })
+      return token
+    }
+  }
 })
+
 
 function validateUser(user) {
   const schema = Joi.object({
     nome: Joi.string().required(),
     email: Joi.string().required().regex(/.*@.*/),
     senha: Joi.string().required().min(8),
-    telefones: Joi.array().items(Joi.object({ numero: Joi.string().length(9).pattern(/^[0-9]+$/).required(), ddd: Joi.string().length(2).pattern(/^[0-9]+$/) })).min(1).required()
+    telefones: Joi.array().items({
+      numero: Joi.string().length(9).pattern(/^[0-9]+$/).required(),
+      ddd: Joi.string().length(2).pattern(/^[0-9]+$/)
+    }).min(1).required()
   })
 
   return schema.validate(user)
 }
 
-userSchema.methods.genAuthToken = () => {
-  return JWT.sign(
-    {
-      nome: this.nome,
-      email: this.email,
-      telefones: this.telefones
-    }, process.env.JWT_SECRET)
-}
+userSchema.pre('save', (next) => {
+  this.updatedAt = Date.now()
+  return next()
+})
 
 const User = mongoose.model('User', userSchema)
 

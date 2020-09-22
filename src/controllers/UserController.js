@@ -27,6 +27,6 @@ module.exports = {
       telefones
     })
 
-    return res.json(_.pick(user, ['_id', 'nome', 'email', 'telefones']))
+    return res.json(_.pick(user, ['_id', 'nome', 'email', 'telefones', 'token']))
   }
 }
