@@ -22,7 +22,7 @@ Listagem de todos os usuários cadastrados no banco de dados.
 
 
 > POST /users
-> Content-Type: Application/Json
+
 >Body:
 ```javascript
 {
