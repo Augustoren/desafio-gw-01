@@ -3,6 +3,11 @@ const bcrypt = require('bcrypt')
 const _ = require('lodash')
 
 module.exports = {
+  async index(req, res) {
+    const users = await User.find()
+    return res.json(users)
+  },
+
   async store(req, res) {
     const { error } = validateUser(req.body)
     if (error) return res.status(400).json({ validationError: error.details[0].message })
