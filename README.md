@@ -3,7 +3,7 @@
 ### Executando o projeto
 
 ##### Antes:
-> Abra o arquivo .env na raiz do projeto e adicione a string de conexão com seu banco mongoDB, Ex: 'mongodb://localhost/<nomeDoBanco>'
+> Abra o arquivo .env na raiz do projeto e adicione a string de conexão com seu banco mongoDB, Ex: 'mongodb://localhost/nomeDoBanco'
 
 
 Instale as dependências e dependências de desenvolvimento e execute o projeto.
